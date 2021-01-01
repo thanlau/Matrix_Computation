@@ -88,16 +88,10 @@ class Matrix:
             res.append(row_res)
         return res
 
-    def adjoint_matrix(self, m):
+     def adjoint_matrix(self, m):
         if len(m) == 1:
             return 1
-        res = []
-        for r in range(len(m)):
-            row_res = []
-            for c in range(len(m)):
-                tmp = self.matrix_minor(m, r, c)
-                row_res.append(self.determinant_recursive(tmp) * (-1)**(r+c))
-            res.append(row_res)
+        res = [[self.determinant_recursive(self.matrix_minor(m, r, c)) * (-1)**(r+c) for c in range(len(m))] for r in range(len(m))]
         return self.trans(res)
 
 
@@ -105,14 +99,10 @@ class Matrix:
         det = self.determinant_recursive(m)
         det_ = 1/det
         adj_m = self.adjoint_matrix(m)
-        res = []
-        for r in range(len(m)):
-            row_res = []
-            for c in range(len(m[0])):
-                row_res.append(adj_m[r][c] * det_)
-            res.append(row_res)
+        res = [[adj_m[r][c] * det_ for c in range(len(m[0]))] for r in range(len(m))]
         return Matrix(res)
-
+    
+    
     @classmethod
     def num(cls, s):
         try:
